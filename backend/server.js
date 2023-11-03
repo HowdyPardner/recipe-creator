@@ -24,7 +24,7 @@ server.use(cors({
 }));
 
 // Add proxy for /server routing
-app.use((req, res) => {
+server.use((req, res) => {
     if(req.path.startsWith('/server')){
         req.url = req.url.replace('/server', '');
     }
