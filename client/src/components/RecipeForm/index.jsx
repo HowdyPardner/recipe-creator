@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 
-const IngredientsForm = ({recipies, setRecipies}) => {
-    const [recipieData, setRecipieData] = useState({
+const IngredientsForm = ({recipes, setrecipes}) => {
+    const [recipeData, setrecipeData] = useState({
         title: "",
         description: "",
         ingredients: "",
@@ -11,7 +11,7 @@ const IngredientsForm = ({recipies, setRecipies}) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setRecipieData((prevState) => ({
+        setrecipeData((prevState) => ({
             ...prevState, [name]: value
         }))
 
@@ -23,14 +23,14 @@ const IngredientsForm = ({recipies, setRecipies}) => {
         try {
             const response = await axios({
                 method: "POST",
-                url: "/server/recipies",
-                data: recipieData
+                url: "/server/recipes",
+                data: recipeData
             })
             console.log(AuthenticatorResponse)
             if (response.status >= 200 && response.status < 300) {
                 console.log('Added Recipe successfully:', response.data);
-                setRecipies((recipies) => {
-                    return [...recipies, response.data]
+                setrecipes((recipes) => {
+                    return [...recipes, response.data]
                 })
             } else {
                 console.error('Error registering event:', response.data);
@@ -50,7 +50,7 @@ const IngredientsForm = ({recipies, setRecipies}) => {
                         type="text"
                         id="title"
                         name="title"
-                        value={recipieData.title}
+                        value={recipeData.title}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -61,7 +61,7 @@ const IngredientsForm = ({recipies, setRecipies}) => {
                         type="text"
                         id="description"
                         name="description"
-                        value={recipieData.description}
+                        value={recipeData.description}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -72,7 +72,7 @@ const IngredientsForm = ({recipies, setRecipies}) => {
                         type="text"
                         id="ingredients"
                         name="ingredients"
-                        value={recipieData.ingredients}
+                        value={recipeData.ingredients}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -83,7 +83,7 @@ const IngredientsForm = ({recipies, setRecipies}) => {
                         type="text"
                         id="instructions"
                         name="instructions"
-                        value={recipieData.instructions}
+                        value={recipeData.instructions}
                         onChange={handleInputChange}
                     />
                 </div>

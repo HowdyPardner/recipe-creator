@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 require('dotenv').config();
 require('./config/db.js');
-const Recipe = require('./models/Recipie.js')
+const Recipe = require('./models/Recipe.js')
 const server = express();
 const PORT = 3000;
 /* END DEPENDANCIES */
@@ -35,13 +35,13 @@ server.use(cors({
 
 
 /* START ROUTES */
-server.get("/recipies", async (req, res)=> {
-    let arrayOfRecipies = await Recipe.find();
-    console.log(arrayOfRecipies);
-    res.send(arrayOfRecipies);
+server.get("/recipes", async (req, res)=> {
+    let arrayOfrecipes = await Recipe.find();
+    console.log(arrayOfrecipes);
+    res.send(arrayOfrecipes);
 }) 
 
-server.post("/recipies", async (req, res)=>{
+server.post("/recipes", async (req, res)=>{
     try {
         let response = await Recipe.create(req.body);
         res.status(201).send(response) 
@@ -52,11 +52,11 @@ server.post("/recipies", async (req, res)=>{
     }
 })
 
-server.delete('/recipies/:idOfRecipie', async (req,res)=>{
-    let id = req.params.idOfRecipie;
+server.delete('/recipes/:idOfrecipe', async (req,res)=>{
+    let id = req.params.idOfrecipe;
     let response = await Recipe.findByIdAndDelete(id);
     console.log(response);
-    res.send('deleted recipie!')
+    res.send('deleted recipe!')
 })
 /* END ROUTES */
 
