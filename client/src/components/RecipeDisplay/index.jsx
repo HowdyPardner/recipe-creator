@@ -4,25 +4,25 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { ArrowRight, Pencil, XCircleFill } from 'react-bootstrap-icons';
 import './index.css'
-const RecipeDisplay = ({ recipies, setRecipies }) => {
+const RecipeDisplay = ({ recipes, setrecipes }) => {
 
   useEffect(() => {
-    const fetchRecipies = async () => {
+    const fetchrecipes = async () => {
       try {
-        const response = await axios('/server/recipies')
+        const response = await axios('/server/recipes')
         console.log(response.data)
-        setRecipies(...recipies, response.data)
+        setrecipes(...recipes, response.data)
       } catch (error) {
         console.log(error)
       }
     }
-    fetchRecipies();
+    fetchrecipes();
   }, [])
 
   const handleEditClick = (recipeId) => {
     console.log('recipeId ', recipeId);
     axios({
-      url: `/server/recipies/${recipeId}`,
+      url: `/server/recipes/${recipeId}`,
       method: "PUT",
       data: {
 
@@ -33,17 +33,17 @@ const RecipeDisplay = ({ recipies, setRecipies }) => {
   const handleDelete = async (recipeId) => {
     let response = await axios({
       method: "DELETE",
-      url: `/server/recipies/${recipeId}`
+      url: `/server/recipes/${recipeId}`
     })
     if (response.status === 200) {
-      setRecipies(recipies.filter(recipie => recipie._id !== recipeId));
+      setrecipes(recipes.filter(recipe => recipe._id !== recipeId));
     }
   }
 
   return (
     <div>
       RecipeDisplay
-      {recipies.map((currentRecipe) => (
+      {recipes.map((currentRecipe) => (
         <Card key={currentRecipe._id} className='recipe-card-component'>
           <Pencil className='edit-button' onClick={() => handleEditClick(currentRecipe._id)} />
           <XCircleFill className='delete-button' onClick={() => handleDelete(currentRecipe._id)} />
