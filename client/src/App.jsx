@@ -4,13 +4,13 @@ import IngredientsForm from './components/RecipeForm';
 import RecipeDisplay from './components/RecipeDisplay';
 
 function App() {
-  const [recipies, setRecipies] = useState([])
+  const [recipes, setrecipes] = useState([])
   return (
 
     <>
       Hello from Main!
-      <IngredientsForm recipies={recipies} setRecipies={setRecipies} />
-      <RecipeDisplay recipies={recipies} setRecipies={setRecipies} />
+      <IngredientsForm recipes={recipes} setrecipes={setrecipes} />
+      <RecipeDisplay recipes={recipes} setrecipes={setrecipes} />
     </>
   )
 }
