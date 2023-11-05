@@ -7,16 +7,16 @@ import './index.css'
 const RecipeDisplay = ({ recipes, setrecipes }) => {
 
   useEffect(() => {
-    const fetchrecipes = async () => {
+    const fetchRecipes = async () => {
       try {
         const response = await axios('/server/recipes')
         console.log(response.data)
-        setrecipes(...recipes, response.data)
+        setrecipes(response.data)
       } catch (error) {
         console.log(error)
       }
     }
-    fetchrecipes();
+    fetchRecipes();
   }, [])
 
   const handleEditClick = (recipeId) => {
