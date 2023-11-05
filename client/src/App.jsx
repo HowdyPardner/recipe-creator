@@ -1,24 +1,16 @@
 import { useState } from 'react'
 import './App.css'
 import IngredientsForm from './components/RecipeForm';
+import RecipeDisplay from './components/RecipeDisplay';
 
 function App() {
-  /* 
-    title: { type: String, required: true, },
-    description: { type: String, },
-    ingredients: [{ name: String, quantity: String, unit: String }],
-    instructions: [{ type: String }],
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // 'User' will be a reference to the User model
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date },
-    tags: [{ type: String }],
-    imageURL: { type: String, },
-  */
+  const [recipies, setRecipies] = useState([])
   return (
+
     <>
-        Hello from Main!
-      <IngredientsForm />
-      
+      Hello from Main!
+      <IngredientsForm recipies={recipies} setRecipies={setRecipies} />
+      <RecipeDisplay recipies={recipies} setRecipies={setRecipies} />
     </>
   )
 }

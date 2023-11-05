@@ -1,6 +1,7 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 
-const IngredientsForm = () => {
+const IngredientsForm = ({recipies, setRecipies}) => {
     const [recipieData, setRecipieData] = useState({
         title: "",
         description: "",
@@ -16,9 +17,32 @@ const IngredientsForm = () => {
 
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios({
+                method: "POST",
+                url: "/server/recipies",
+                data: recipieData
+            })
+            console.log(AuthenticatorResponse)
+            if (response.status >= 200 && response.status < 300) {
+                console.log('Added Recipe successfully:', response.data);
+                setRecipies((recipies) => {
+                    return [...recipies, response.data]
+                })
+            } else {
+                console.error('Error registering event:', response.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div>
-            <form action="" onSubmit={() => handleSubmit()}>
+            <form action="" onSubmit={handleSubmit}>
 
                 <div>
                     <label htmlFor="title">Title:</label>
@@ -63,7 +87,7 @@ const IngredientsForm = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <button>Submit!</button>
+                <button type="submit">Submit!</button>
             </form>
         </div>
 
