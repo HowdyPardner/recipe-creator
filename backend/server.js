@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 require('dotenv').config();
 require('./config/db.js');
+const Recipe = require('./models/Recipie.js')
 const server = express();
 const PORT = 3000;
 /* END DEPENDANCIES */
@@ -24,16 +25,39 @@ server.use(cors({
 }));
 
 // Add proxy for /server routing
-server.use((req, res) => {
-    if(req.path.startsWith('/server')){
-        req.url = req.url.replace('/server', '');
-    }
-    next();
-})
+// server.use((req, res) => {
+//     if(req.path.startsWith('/server')){
+//         req.url = req.url.replace('/server', '');
+//     }
+//     next()
+// })
 /* END MIDDLEWARE */
 
 
 /* START ROUTES */
+server.get("/recipies", async (req, res)=> {
+    let arrayOfRecipies = await Recipe.find();
+    console.log(arrayOfRecipies);
+    res.send(arrayOfRecipies);
+}) 
+
+server.post("/recipies", async (req, res)=>{
+    try {
+        let response = await Recipe.create(req.body);
+        res.status(201).send(response) 
+        console.log("Added Recipe to DB")
+    } catch (error) {
+        console.log(error);
+        res.send("Error pushing Recipe to db")
+    }
+})
+
+server.delete('/recipies/:idOfRecipie', async (req,res)=>{
+    let id = req.params.idOfRecipie;
+    let response = await Recipe.findByIdAndDelete(id);
+    console.log(response);
+    res.send('deleted recipie!')
+})
 /* END ROUTES */
 
 

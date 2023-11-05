@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "name": "recipe-creator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "servers": "concurrently \" cd client && npm run dev \"   \" cd backend && nodemon server.js \" "
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
