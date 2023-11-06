@@ -1,50 +1,53 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-const IngredientsForm = ({recipes, setrecipes}) => {
-    const [recipeData, setrecipeData] = useState({
-        title: "",
-        description: "",
-        ingredients: "",
-        instructions: "",
-    })
+const RecipeForm = ({ recipes, setRecipes }) => {
+    const [recipeData, setRecipeData] = useState({
+        title: '',
+        description: '',
+        ingredients: '',
+        instructions: '',
+        image: '',
+    });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setrecipeData((prevState) => ({
-            ...prevState, [name]: value
-        }))
+        setRecipeData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
 
-    }
+    const handleImageChange = (e) => {
+        const file = URL.createObjectURL(e.target.files[0]);
+        setRecipeData((prevState) => ({
+            ...prevState,
+            image: file, 
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log(e.target.files)
         try {
-            const response = await axios({
-                method: "POST",
-                url: "/server/recipes",
-                data: recipeData
-            })
-            console.log(AuthenticatorResponse)
+            const response = await axios.post('/server/recipes', recipeData);
             if (response.status >= 200 && response.status < 300) {
                 console.log('Added Recipe successfully:', response.data);
-                setrecipes((recipes) => {
-                    return [...recipes, response.data]
-                })
+                setRecipes((recipes) => {
+                    return [...recipes, response.data];
+                });
             } else {
-                console.error('Error registering event:', response.data);
+                console.error('Error adding recipe:', response.data);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
     return (
         <div>
             <form action="" onSubmit={handleSubmit}>
-
-                <div>
+                <div className="form-group">
                     <label htmlFor="title">Title:</label>
                     <input
                         type="text"
@@ -52,10 +55,11 @@ const IngredientsForm = ({recipes, setrecipes}) => {
                         name="title"
                         value={recipeData.title}
                         onChange={handleInputChange}
+                        className="form-control"
                     />
                 </div>
 
-                <div>
+                <div className="form-group">
                     <label htmlFor="description">Description:</label>
                     <input
                         type="text"
@@ -63,10 +67,11 @@ const IngredientsForm = ({recipes, setrecipes}) => {
                         name="description"
                         value={recipeData.description}
                         onChange={handleInputChange}
+                        className="form-control"
                     />
                 </div>
 
-                <div>
+                <div className="form-group">
                     <label htmlFor="ingredients">Ingredients</label>
                     <input
                         type="text"
@@ -74,25 +79,38 @@ const IngredientsForm = ({recipes, setrecipes}) => {
                         name="ingredients"
                         value={recipeData.ingredients}
                         onChange={handleInputChange}
+                        className="form-control"
                     />
                 </div>
 
-                <div>
+                <div className="form-group">
                     <label htmlFor="instructions">Instructions</label>
-                    <input
-                        type="text"
+                    <textarea
                         id="instructions"
                         name="instructions"
                         value={recipeData.instructions}
                         onChange={handleInputChange}
+                        className="form-control"
                     />
                 </div>
-                <button type="submit">Submit!</button>
+
+                <div className="form-group">
+                    <label htmlFor="image">Image:</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        onChange={handleImageChange}
+                        className="form-control-file"
+                    />
+                </div>
+
+                <button type="submit" className="btn btn-primary">
+                    Submit!
+                </button>
             </form>
         </div>
+    );
+};
 
-
-    )
-}
-
-export default IngredientsForm
+export default RecipeForm;

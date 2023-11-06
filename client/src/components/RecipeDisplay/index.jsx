@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { ArrowRight, Pencil, XCircleFill } from 'react-bootstrap-icons';
+import { Pencil, XCircleFill } from 'react-bootstrap-icons';
 import './index.css'
 const RecipeDisplay = ({ recipes, setrecipes }) => {
 
@@ -42,21 +42,26 @@ const RecipeDisplay = ({ recipes, setrecipes }) => {
 
   return (
     <div>
-      RecipeDisplay
-      {recipes.map((currentRecipe) => (
-        <Card key={currentRecipe._id} className='recipe-card-component'>
-          <Pencil className='edit-button' onClick={() => handleEditClick(currentRecipe._id)} />
-          <XCircleFill className='delete-button' onClick={() => handleDelete(currentRecipe._id)} />
-          <Card.Body>
-            <Card.Img variant="top" src="holder.js/100px180" />
-            <Card.Title>Title:{currentRecipe.title}</Card.Title><br />
-            <Card.Text>description:{currentRecipe.description}</Card.Text><br />
-
-            <Button variant="primary">Learn More</Button>
-          </Card.Body>
-        </Card>
-      ))}
-
+      <div className='container'>
+        <div className='row flex d-flex justify-content-center justify-content-between p-4'>
+          {recipes.map((currentRecipe) => (
+            <div key={currentRecipe._id} className='col-sm-6 col-md-4 col-lg-3'>
+              <Card id='recipe-card' className='recipe-card-component mb-3'>
+                <div className='edit-delete-buttons'>
+                  <Pencil className='edit-button' onClick={() => handleEditClick(currentRecipe._id)} />
+                  <XCircleFill className='delete-button' onClick={() => handleDelete(currentRecipe._id)} />
+                </div>
+                <Card.Img variant='top' src={currentRecipe.image} />
+                <Card.Body>
+                  <Card.Title>Title: {currentRecipe.title}</Card.Title>
+                  <Card.Text>Description: {currentRecipe.description}</Card.Text>
+                  <Button variant='primary'>Learn More</Button>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
