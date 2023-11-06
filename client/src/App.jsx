@@ -1,26 +1,31 @@
 import { useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 import './App.css'
-import IngredientsForm from './components/RecipeForm';
+import RecipeForm from './components/RecipeForm';
 import RecipeDisplay from './components/RecipeDisplay';
+import Navbar from './components/Navbar';
 
 function App() {
-  const [recipes, setrecipes] = useState([])
+  const [recipes, setRecipes] = useState([])
   return (
 
-    <>
+    <div className='app-container container'>
+      <div className='row'>
+        <div className='app-container-navbar-container col'>
+          <Navbar />
+        </div>
+       
+      </div>
+      <div className='col app-right-side'>
+        <Routes>
+          <Route path="/" element={<RecipeDisplay recipes={recipes} setrecipes={setRecipes} />} />
+          <Route path='/recipe_display' element={<RecipeDisplay recipes={recipes} setrecipes={setRecipes} />} />
+          <Route path='/create_recipe' element={<RecipeForm recipes={recipes} setrecipes={setRecipes} />} />
+        </Routes>
+      </div>
 
-     <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/create_recipe'>Create A Recipe!</Link>
-     </nav>
-
-      <Routes>
-        <Route path="/" element={<RecipeDisplay recipes={recipes} setrecipes={setrecipes} />} />
-        <Route path='/recipe_display' element={<RecipeDisplay recipes={recipes} setrecipes={setrecipes} />} />
-        <Route path='/create_recipe' element={<IngredientsForm recipes={recipes} setrecipes={setrecipes} />} />
-      </Routes>
-    </>
+      </div>
+     
   )
 }
 
