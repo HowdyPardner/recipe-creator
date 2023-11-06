@@ -52,6 +52,17 @@ server.post("/recipes", async (req, res)=>{
     }
 })
 
+server.put("/recipes", async (req, res) => {
+    try {
+        let response = await Recipe.findByIdAndUpdate(req.body._id, req.body, {new:true});
+        res.status(201).send(response)
+        console.log("Added Recipe to DB")
+    } catch (error) {
+        console.log(error);
+        res.send("Error pushing Recipe to db")
+    }
+})
+
 server.delete('/recipes/:idOfrecipe', async (req,res)=>{
     let id = req.params.idOfrecipe;
     let response = await Recipe.findByIdAndDelete(id);

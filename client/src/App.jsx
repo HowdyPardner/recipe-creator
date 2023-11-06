@@ -4,6 +4,7 @@ import './App.css'
 import RecipeForm from './components/RecipeForm';
 import RecipeDisplay from './components/RecipeDisplay';
 import Navbar from './components/Navbar';
+import RecipeDetailsPage from './pages/RecipeDetailsPage';
 
 function App() {
   const [recipes, setRecipes] = useState([])
@@ -23,7 +24,7 @@ function App() {
           <Route path='/create_recipe' element={<RecipeForm recipes={recipes} setrecipes={setRecipes} />} />
         </Routes>
       </div>
-
+      <RecipeDetailsPage />
       </div>
      
   )
