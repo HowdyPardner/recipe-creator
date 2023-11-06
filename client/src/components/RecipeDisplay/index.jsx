@@ -1,10 +1,14 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
-import Button from 'react-bootstrap/Button';
+import React, { useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card';
 import { Pencil, XCircleFill } from 'react-bootstrap-icons';
 import './index.css'
+import { Modal, Button } from 'react-bootstrap';
+
 const RecipeDisplay = ({ recipes, setrecipes }) => {
+
+const [show, setShow] = useState(false);
+const [itemToEdit, setItemToEdit] =useState({})
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -19,15 +23,14 @@ const RecipeDisplay = ({ recipes, setrecipes }) => {
     fetchRecipes();
   }, [])
 
-  const handleEditClick = (recipeId) => {
-    console.log('recipeId ', recipeId);
-    axios({
-      url: `/server/recipes/${recipeId}`,
-      method: "PUT",
-      data: {
+  const handleEditClick = (recipe) => {
+    setItemToEdit(recipe)
+    setShow(true);
 
-      }
-    })
+  }
+
+  const handleClose = () => {
+    setShow(false)
   }
 
   const handleDelete = async (recipeId) => {
@@ -40,15 +43,53 @@ const RecipeDisplay = ({ recipes, setrecipes }) => {
     }
   }
 
+  const handleSave = async () => {
+    
+   let response = await  axios({
+      url:'/server/recipes',
+      method:"PUT",
+      data:itemToEdit
+    })
+    let updatedRecipes = recipes.map((currentRecipe)=>{
+      if(currentRecipe._id === itemToEdit._id){
+        return response.data;
+      }else{
+        return currentRecipe;
+      }
+    })
+    console.log(updatedRecipes)
+    setrecipes(updatedRecipes)
+    console.log(response)
+    setShow(false)
+    returnSaveSuccessAlert();
+
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setItemToEdit((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const returnSaveSuccessAlert = () =>{
+    return (
+      <div class="alert alert-success" role="alert">
+        A simple success alert—check it out!
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className='container'>
-        <div className='row flex d-flex justify-content-center justify-content-between p-4'>
+        <div className='row flex d-flex justify-content-start p-4'>
           {recipes.map((currentRecipe) => (
             <div key={currentRecipe._id} className='col-sm-6 col-md-4 col-lg-3'>
               <Card id='recipe-card' className='recipe-card-component mb-3'>
                 <div className='edit-delete-buttons'>
-                  <Pencil className='edit-button' onClick={() => handleEditClick(currentRecipe._id)} />
+                  <Pencil className='edit-button' onClick={() => handleEditClick(currentRecipe)} />
                   <XCircleFill className='delete-button' onClick={() => handleDelete(currentRecipe._id)} />
                 </div>
                 <Card.Img variant='top' src={currentRecipe.image} />
@@ -62,6 +103,26 @@ const RecipeDisplay = ({ recipes, setrecipes }) => {
           ))}
         </div>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal title</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input type="text" name='title' onChange={handleInputChange} value={itemToEdit.title}/>
+          <input type="text" name='description' onChange={handleInputChange} value={itemToEdit.description} />
+          <input type="text" name='image' onChange={handleInputChange} value={itemToEdit.image} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   )
 }
