@@ -2,13 +2,13 @@ import React from 'react'
 import './index.css'
 const RecipeDetailsPage = () => {
   return (
-    <div className='container'> 
-        RecipeDetailsPage
-        <div className='col' id='recipe-details-page-left'>
-          left side
-        </div>
+    <div className='container'>
+      RecipeDetailsPage
+      <div className='col' id='recipe-details-page-left'>
+        <img src="..." className="img-fluid" alt="..."/>
+      </div>
 
-      <div className='col'  id='recipe-details-page-right'>
+      <div className='col' id='recipe-details-page-right'>
         right side
       </div>
 
