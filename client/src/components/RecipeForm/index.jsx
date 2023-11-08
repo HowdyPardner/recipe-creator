@@ -96,12 +96,12 @@ const RecipeForm = ({ recipes, setRecipes }) => {
 
                 <div className="form-group">
                     <label htmlFor="image">Image:</label>
-                    <input
-                        type="file"
+                    <textarea
+                        type="text"
                         id="image"
                         name="image"
-                        onChange={handleImageChange}
-                        className="form-control-file"
+                        onChange={handleInputChange}
+                        className="form-control"
                     />
                 </div>
 

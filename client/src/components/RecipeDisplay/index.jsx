@@ -7,17 +7,18 @@ import { Modal, Button } from 'react-bootstrap';
 
 const RecipeDisplay = ({ recipes, setrecipes }) => {
 
-const [show, setShow] = useState(false);
-const [itemToEdit, setItemToEdit] =useState({})
+  const [show, setShow] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState({})
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await axios('/server/recipes')
-        console.log(response.data)
-        setrecipes(response.data)
+        const response = await axios('/server/recipes');
+        console.log(response.data);
+        setrecipes(response.data);
       } catch (error) {
         console.log(error)
+        console.log("Error Fetching")
       }
     }
     fetchRecipes();
@@ -44,16 +45,16 @@ const [itemToEdit, setItemToEdit] =useState({})
   }
 
   const handleSave = async () => {
-    
-   let response = await  axios({
-      url:'/server/recipes',
-      method:"PUT",
-      data:itemToEdit
+
+    let response = await axios({
+      url: '/server/recipes',
+      method: "PUT",
+      data: itemToEdit
     })
-    let updatedRecipes = recipes.map((currentRecipe)=>{
-      if(currentRecipe._id === itemToEdit._id){
+    let updatedRecipes = recipes.map((currentRecipe) => {
+      if (currentRecipe._id === itemToEdit._id) {
         return response.data;
-      }else{
+      } else {
         return currentRecipe;
       }
     })
@@ -73,7 +74,7 @@ const [itemToEdit, setItemToEdit] =useState({})
     }));
   };
 
-  const returnSaveSuccessAlert = () =>{
+  const returnSaveSuccessAlert = () => {
     return (
       <div class="alert alert-success" role="alert">
         A simple success alert—check it out!
@@ -109,7 +110,7 @@ const [itemToEdit, setItemToEdit] =useState({})
           <Modal.Title>Modal title</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type="text" name='title' onChange={handleInputChange} value={itemToEdit.title}/>
+          <input type="text" name='title' onChange={handleInputChange} value={itemToEdit.title} />
           <input type="text" name='description' onChange={handleInputChange} value={itemToEdit.description} />
           <input type="text" name='image' onChange={handleInputChange} value={itemToEdit.image} />
         </Modal.Body>
