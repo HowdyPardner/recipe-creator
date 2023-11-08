@@ -7,6 +7,7 @@ require('dotenv').config();
 require('./config/db.js');
 const Recipe = require('./models/Recipe.js')
 const server = express();
+const path = require('path');
 const PORT = 3000;
 /* END DEPENDANCIES */
 
@@ -20,25 +21,32 @@ const PORT = 3000;
 server.use(express.json());
 server.use(helmet());
 server.use(morgan('dev'));
+server.use(express.static(path.join(__dirname, "../client/dist")));
 server.use(cors({
     origin: "*"
 }));
 
 // Add proxy for /server routing
-// server.use((req, res) => {
-//     if(req.path.startsWith('/server')){
-//         req.url = req.url.replace('/server', '');
-//     }
-//     next()
-// })
+server.use((req, res, next) => {
+    if (req.path.startsWith('/server')) {
+        req.url = req.url.replace('/server', ''); // strip /server from the path
+    }
+    next();
+})
 /* END MIDDLEWARE */
 
 
 /* START ROUTES */
 server.get("/recipes", async (req, res)=> {
-    let arrayOfrecipes = await Recipe.find();
-    console.log(arrayOfrecipes);
-    res.send(arrayOfrecipes);
+    try {
+        let arrayOfrecipes = await Recipe.find();
+        console.log(arrayOfrecipes);
+        res.send(arrayOfrecipes);
+    } catch (error) {
+        console.log(error)
+        res.send("Error getting recipes")
+    }
+   
 }) 
 
 server.post("/recipes", async (req, res)=>{
@@ -59,7 +67,7 @@ server.put("/recipes", async (req, res) => {
         console.log("Added Recipe to DB")
     } catch (error) {
         console.log(error);
-        res.send("Error pushing Recipe to db")
+        res.send("Error adding Recipe update to db")
     }
 })
 
@@ -69,9 +77,16 @@ server.delete('/recipes/:idOfrecipe', async (req,res)=>{
     console.log(response);
     res.send('deleted recipe!')
 })
+
+
+server.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
 /* END ROUTES */
 
 
 server.listen(PORT, () => {
     console.log(`Server LIVE on PORT ${PORT} `)
 });
+ 
