@@ -2,7 +2,7 @@ import React from 'react'
 import './index.css'
 const RecipeDetailsPage = () => {
 
-  // test
+  // test 1
   return (
     <div className='container'>
       RecipeDetailsPage
